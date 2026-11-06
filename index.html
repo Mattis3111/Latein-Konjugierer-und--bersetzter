@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latein Helfer</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px 16px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #101827, #1e293b);
+    color: #1e293b;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #172554;
+    font-size: 36px;
+    letter-spacing: -1px;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    width: 65px;
+    height: 4px;
+    background: #c49a45;
+    border-radius: 5px;
+    margin: 14px auto 25px;
+}
+
+h2 {
+    color: #1e3a5f;
+    margin-top: 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #dbe2ea;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 11px;
+    background: #e2e8f0;
+    color: #334155;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.tab-button:hover {
+    background: #cbd5e1;
+}
+
+.tab-button.active {
+    background: #1e3a5f;
+    color: white;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.2);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 11px;
+    font-size: 16px;
+    margin-bottom: 13px;
+    background: white;
+    color: #1e293b;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #c49a45;
+    box-shadow: 0 0 0 3px rgba(196,154,69,0.16);
+}
+
+button.action {
+    width: 100%;
+    padding: 14px;
+    background: #1e3a5f;
+    color: white;
+    border: none;
+    border-radius: 11px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button.action:hover {
+    background: #c49a45;
+    color: #172554;
+    transform: translateY(-1px);
+}
+
+.tab-content p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #c49a45;
+    border-radius: 12px;
+    line-height: 1.7;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.035);
+    overflow-x: auto;
+}
+
+.result h3 {
+    margin-top: 0;
+    color: #1e3a5f;
+}
+
+.result hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 20px 0;
+}
+
+.section-title {
+    margin-top: 35px;
+    border-bottom: 1px solid #dbe2ea;
+    padding-bottom: 10px;
+    color: #1e3a5f;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background: #1e3a5f;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: #f1f5f9;
+}
+
+tr:hover {
+    background: #fef3c7;
+}
+
+.empty {
+    color: #64748b;
+    text-align: center;
+    padding: 18px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 12px 8px;
+    }
+
+    .container {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 29px;
+    }
+
+    .tabs {
+        gap: 7px;
+    }
+
+    .tab-button {
+        padding: 12px 7px;
+        font-size: 14px;
+    }
+
+    .result {
+        padding: 14px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px 6px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Latein Helfer</h1>
+
+<div class="tabs">
+    <button class="tab-button active" onclick="switchTab('wordTab', this)">
+        Wortanalyse
+    </button>
+
+    <button class="tab-button" onclick="switchTab('pronounTab', this)">
+        Pronomen
+    </button>
+</div>
+
+<!-- WORTANALYSE -->
+<div id="wordTab" class="tab-content active">
+
+    <h2>Lateinisches Wort analysieren</h2>
+
+    <input
+        type="text"
+        id="wordInput"
+        placeholder="Lateinisches Wort eingeben ..."
+    >
+
+    <button class="action" onclick="analyzeWord()">
+        Analysieren
+    </button>
+
+    <div id="wordResult" class="result">
+        Gib ein lateinisches Wort ein.
+    </div>
+
+</div>
+
+
+<!-- PRONOMEN -->
+<div id="pronounTab" class="tab-content">
+
+    <h2>Pronomen analysieren</h2>
+
+    <p>Gib eine beliebige Form eines Pronomens ein.</p>
+
+    <input
+        type="text"
+        id="pronounInput"
+        placeholder="Zum Beispiel: huius, hic, mihi, quem ..."
+    >
+
+    <button class="action" onclick="analyzePronounInput()">
+        Pronomen analysieren
+    </button>
+
+    <div id="pronounResult" class="result">
+        Hier erscheint die Analyse des eingegebenen Pronomens.
+    </div>
+
+    <h2 class="section-title">Pronomen auswählen</h2>
+
+    <p>Wähle ein Pronomen aus, um seine vollständige Deklinationstabelle anzuzeigen.</p>
+
+    <select id="pronounSelect" onchange="displaySelectedPronoun()">
+        <option value="">Bitte Pronomen auswählen</option>
+    </select>
+
+    <div id="selectedPronounTable" class="result">
+        <div class="empty">Wähle oben ein Pronomen aus.</div>
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   VERBEN
+========================= */
+
+const verbs = {
+    amare: {
+        meaning: "lieben",
+        conjugation: 1,
+        present: ["amo", "amas", "amat", "amamus", "amatis", "amant"],
+        imperfect: ["amabam", "amabas", "amabat", "amabamus", "amabatis", "amabant"],
+        perfect: ["amavi", "amavisti", "amavit", "amavimus", "amavistis", "amaverunt"]
+    },
+
+    laudare: {
+        meaning: "loben",
+        conjugation: 1,
+        present: ["laudo", "laudas", "laudat", "laudamus", "laudatis", "laudant"],
+        imperfect: ["laudabam", "laudabas", "laudabat", "laudabamus", "laudabatis", "laudabant"],
+        perfect: ["laudavi", "laudavisti", "laudavit", "laudavimus", "laudavistis", "laudaverunt"]
+    },
+
+    vocare: {
+        meaning: "rufen",
+        conjugation: 1,
+        present: ["voco", "vocas", "vocat", "vocamus", "vocatis", "vocant"],
+        imperfect: ["vocabam", "vocabas", "vocabat", "vocabamus", "vocabatis", "vocabant"],
+        perfect: ["vocavi", "vocavisti", "vocavit", "vocavimus", "vocavistis", "vocaverunt"]
+    },
+
+    portare: {
+        meaning: "tragen",
+        conjugation: 1,
+        present: ["porto", "portas", "portat", "portamus", "portatis", "portant"],
+        imperfect: ["portabam", "portabas", "portabat", "portabamus", "portabatis", "portabant"],
+        perfect: ["portavi", "portavisti", "portavit", "portavimus", "portavistis", "portaverunt"]
+    },
+
+    monere: {
+        meaning: "ermahnen",
+        conjugation: 2,
+        present: ["moneo", "mones", "monet", "monemus", "monetis", "monent"],
+        imperfect: ["monebam", "monebas", "monebat", "monebamus", "monebatis", "monebant"],
+        perfect: ["monui", "monuisti", "monuit", "monuimus", "monuistis", "monuerunt"]
+    },
+
+    videre: {
+        meaning: "sehen",
+        conjugation: 2,
+        present: ["video", "vides", "videt", "videmus", "videtis", "vident"],
+        imperfect: ["videbam", "videbas", "videbat", "videbamus", "videbatis", "videbant"],
+        perfect: ["vidi", "vidisti", "vidit", "vidimus", "vidistis", "viderunt"]
+    },
+
+    regere: {
+        meaning: "herrschen",
+        conjugation: 3,
+        present: ["rego", "regis", "regit", "regimus", "regitis", "regunt"],
+        imperfect: ["regebam", "regebas", "regebat", "regebamus", "regebatis", "regebant"],
+        perfect: ["rexi", "rexisti", "rexit", "reximus", "rexistis", "rexerunt"]
+    },
+
+    ducere: {
+        meaning: "führen",
+        conjugation: 3,
+        present: ["duco", "ducis", "ducit", "ducimus", "ducitis", "ducunt"],
+        imperfect: ["ducebam", "ducebas", "ducebat", "ducebamus", "ducebatis", "ducebant"],
+        perfect: ["duxi", "duxisti", "duxit", "duximus", "duxistis", "duxerunt"]
+    },
+
+    mittere: {
+        meaning: "schicken",
+        conjugation: 3,
+        present: ["mitto", "mittis", "mittit", "mittimus", "mittitis", "mittunt"],
+        imperfect: ["mittebam", "mittebas", "mittebat", "mittebamus", "mittebatis", "mittebant"],
+        perfect: ["misi", "misisti", "misit", "misimus", "misistis", "miserunt"]
+    },
+
+    capere: {
+        meaning: "fangen",
+        conjugation: 3,
+        present: ["capio", "capis", "capit", "capimus", "capitis", "capiunt"],
+        imperfect: ["capiebam", "capiebas", "capiebat", "capiebamus", "capiebatis", "capiebant"],
+        perfect: ["cepi", "cepisti", "cepit", "cepimus", "cepistis", "ceperunt"]
+    },
+
+    audire: {
+        meaning: "hören",
+        conjugation: 4,
+        present: ["audio", "audis", "audit", "audimus", "auditis", "audiunt"],
+        imperfect: ["audiebam", "audiebas", "audiebat", "audiebamus", "audiebatis", "audiebant"],
+        perfect: ["audivi", "audivisti", "audivit", "audivimus", "audivistis", "audiverunt"]
+    },
+
+    venire: {
+        meaning: "kommen",
+        conjugation: 4,
+        present: ["venio", "venis", "venit", "venimus", "venitis", "veniunt"],
+        imperfect: ["veniebam", "veniebas", "veniebat", "veniebamus", "veniebatis", "veniebant"],
+        perfect: ["veni", "venisti", "venit", "venimus", "venistis", "venerunt"]
+    },
+
+    sentire: {
+        meaning: "fühlen",
+        conjugation: 4,
+        present: ["sentio", "sentis", "sentit", "sentimus", "sentitis", "sentiunt"],
+        imperfect: ["sentiebam", "sentiebas", "sentiebat", "sentiebamus", "sentiebatis", "sentiebant"],
+        perfect: ["sensi", "sensisti", "sensit", "sensimus", "sensistis", "senserunt"]
+    }
+};
+
+
+/* =========================
+   NOMEN
+========================= */
+
+const nouns = {
+    puella: {
+        meaning: "Mädchen",
+        gender: "feminin",
+        forms: {
+            "puella": "Nominativ Singular / Ablativ Singular",
+            "puellae": "Genitiv Singular / Dativ Singular / Nominativ Plural / Vokativ Plural",
+            "puellam": "Akkusativ Singular",
+            "puellas": "Akkusativ Plural",
+            "puellarum": "Genitiv Plural",
+            "puellis": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    aqua: {
+        meaning: "Wasser",
+        gender: "feminin",
+        forms: {
+            "aqua": "Nominativ Singular / Ablativ Singular",
+            "aquae": "Genitiv Singular / Dativ Singular / Nominativ Plural",
+            "aquam": "Akkusativ Singular",
+            "aquas": "Akkusativ Plural",
+            "aquarum": "Genitiv Plural",
+            "aquis": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    terra: {
+        meaning: "Erde, Land",
+        gender: "feminin",
+        forms: {
+            "terra": "Nominativ Singular / Ablativ Singular",
+            "terrae": "Genitiv Singular / Dativ Singular / Nominativ Plural",
+            "terram": "Akkusativ Singular",
+            "terras": "Akkusativ Plural",
+            "terrarum": "Genitiv Plural",
+            "terris": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    via: {
+        meaning: "Weg, Straße",
+        gender: "feminin",
+        forms: {
+            "via": "Nominativ Singular / Ablativ Singular",
+            "viae": "Genitiv Singular / Dativ Singular / Nominativ Plural",
+            "viam": "Akkusativ Singular",
+            "vias": "Akkusativ Plural",
+            "viarum": "Genitiv Plural",
+            "viis": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    servus: {
+        meaning: "Sklave",
+        gender: "maskulin",
+        forms: {
+            "servus": "Nominativ Singular",
+            "servi": "Genitiv Singular / Nominativ Plural",
+            "servo": "Dativ Singular / Ablativ Singular",
+            "servum": "Akkusativ Singular",
+            "servos": "Akkusativ Plural",
+            "servorum": "Genitiv Plural",
+            "servis": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    amicus: {
+        meaning: "Freund",
+        gender: "maskulin",
+        forms: {
+            "amicus": "Nominativ Singular",
+            "amici": "Genitiv Singular / Nominativ Plural",
+            "amico": "Dativ Singular / Ablativ Singular",
+            "amicum": "Akkusativ Singular",
+            "amicos": "Akkusativ Plural",
+            "amicorum": "Genitiv Plural",
+            "amicis": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    bellum: {
+        meaning: "Krieg",
+        gender: "neutrum",
+        forms: {
+            "bellum": "Nominativ Singular / Akkusativ Singular",
+            "belli": "Genitiv Singular / Nominativ Plural",
+            "bello": "Dativ Singular / Ablativ Singular",
+            "bella": "Nominativ Plural / Akkusativ Plural",
+            "bellorum": "Genitiv Plural",
+            "bellis": "Dativ Plural / Ablativ Plural"
+        }
+    },
+
+    templum: {
+        meaning: "Tempel",
+        gender: "neutrum",
+        forms: {
+            "templum": "Nominativ Singular / Akkusativ Singular",
+            "templi": "Genitiv Singular / Nominativ Plural",
+            "templo": "Dativ Singular / Ablativ Singular",
+            "templa": "Nominativ Plural / Akkusativ Plural",
+            "templorum": "Genitiv Plural",
+            "templis": "Dativ Plural / Ablativ Plural"
+        }
+    }
+};
+
+
+/* =========================
+   PRONOMEN
+   Formen sind jetzt Listen.
+   So werden gleiche Formen NICHT überschrieben.
+========================= */
+
+const pronounForms = {
+
+    hic: {
+        base: "hic, haec, hoc",
+        translation: "dieser, diese, dieses",
+        forms: [
+            ["hic", "Nominativ Singular Maskulin"],
+            ["haec", "Nominativ Singular Feminin"],
+            ["hoc", "Nominativ Singular Neutrum"],
+            ["huius", "Genitiv Singular aller Geschlechter"],
+            ["huic", "Dativ Singular aller Geschlechter"],
+            ["hunc", "Akkusativ Singular Maskulin"],
+            ["hanc", "Akkusativ Singular Feminin"],
+            ["hoc", "Akkusativ Singular Neutrum"],
+            ["hoc", "Ablativ Singular Maskulin / Neutrum"],
+            ["hac", "Ablativ Singular Feminin"],
+            ["hi", "Nominativ Plural Maskulin"],
+            ["hae", "Nominativ Plural Feminin"],
+            ["haec", "Nominativ Plural Neutrum"],
+            ["horum", "Genitiv Plural Maskulin / Neutrum"],
+            ["harum", "Genitiv Plural Feminin"],
+            ["his", "Dativ Plural aller Geschlechter"],
+            ["hos", "Akkusativ Plural Maskulin"],
+            ["has", "Akkusativ Plural Feminin"],
+            ["haec", "Akkusativ Plural Neutrum"],
+            ["his", "Ablativ Plural aller Geschlechter"]
+        ]
+    },
+
+    ille: {
+        base: "ille, illa, illud",
+        translation: "jener, jene, jenes",
+        forms: [
+            ["ille", "Nominativ Singular Maskulin"],
+            ["illa", "Nominativ Singular Feminin"],
+            ["illud", "Nominativ Singular Neutrum"],
+            ["illud", "Akkusativ Singular Neutrum"],
+            ["illius", "Genitiv Singular aller Geschlechter"],
+            ["illi", "Dativ Singular aller Geschlechter"],
+            ["illum", "Akkusativ Singular Maskulin"],
+            ["illam", "Akkusativ Singular Feminin"],
+            ["illo", "Ablativ Singular Maskulin / Neutrum"],
+            ["illa", "Ablativ Singular Feminin"],
+            ["illi", "Nominativ Plural Maskulin"],
+            ["illae", "Nominativ Plural Feminin"],
+            ["illa", "Nominativ Plural Neutrum"],
+            ["illorum", "Genitiv Plural Maskulin / Neutrum"],
+            ["illarum", "Genitiv Plural Feminin"],
+            ["illis", "Dativ Plural aller Geschlechter"],
+            ["illos", "Akkusativ Plural Maskulin"],
+            ["illas", "Akkusativ Plural Feminin"],
+            ["illa", "Akkusativ Plural Neutrum"],
+            ["illis", "Ablativ Plural aller Geschlechter"]
+        ]
+    },
+
+    iste: {
+        base: "iste, ista, istud",
+        translation: "dieser da, diese da, dieses da",
+        forms: [
+            ["iste", "Nominativ Singular Maskulin"],
+            ["ista", "Nominativ Singular Feminin"],
+            ["istud", "Nominativ Singular Neutrum"],
+            ["istud", "Akkusativ Singular Neutrum"],
+            ["istius", "Genitiv Singular aller Geschlechter"],
+            ["isti", "Dativ Singular aller Geschlechter"],
+            ["istum", "Akkusativ Singular Maskulin"],
+            ["istam", "Akkusativ Singular Feminin"],
+            ["isto", "Ablativ Singular Maskulin / Neutrum"],
+            ["ista", "Ablativ Singular Feminin"],
+            ["isti", "Nominativ Plural Maskulin"],
+            ["istae", "Nominativ Plural Feminin"],
+            ["ista", "Nominativ Plural Neutrum"],
+            ["istorum", "Genitiv Plural Maskulin / Neutrum"],
+            ["istarum", "Genitiv Plural Feminin"],
+            ["istis", "Dativ Plural aller Geschlechter"],
+            ["istos", "Akkusativ Plural Maskulin"],
+            ["istas", "Akkusativ Plural Feminin"],
+            ["ista", "Akkusativ Plural Neutrum"],
+            ["istis", "Ablativ Plural aller Geschlechter"]
+        ]
+    },
+
+    ipse: {
+        base: "ipse, ipsa, ipsum",
+        translation: "selbst",
+        forms: [
+            ["ipse", "Nominativ Singular Maskulin"],
+            ["ipsa", "Nominativ Singular Feminin"],
+            ["ipsum", "Nominativ Singular Neutrum"],
+            ["ipsius", "Genitiv Singular aller Geschlechter"],
+            ["ipsi", "Dativ Singular aller Geschlechter"],
+            ["ipsum", "Akkusativ Singular Maskulin / Neutrum"],
+            ["ipsam", "Akkusativ Singular Feminin"],
+            ["ipso", "Ablativ Singular Maskulin / Neutrum"],
+            ["ipsa", "Ablativ Singular Feminin"],
+            ["ipsi", "Nominativ Plural Maskulin"],
+            ["ipsae", "Nominativ Plural Feminin"],
+            ["ipsa", "Nominativ Plural Neutrum"],
+            ["ipsorum", "Genitiv Plural Maskulin / Neutrum"],
+            ["ipsarum", "Genitiv Plural Feminin"],
+            ["ipsis", "Dativ Plural aller Geschlechter"],
+            ["ipsos", "Akkusativ Plural Maskulin"],
+            ["ipsas", "Akkusativ Plural Feminin"],
+            ["ipsa", "Akkusativ Plural Neutrum"],
+            ["ipsis", "Ablativ Plural aller Geschlechter"]
+        ]
+    },
+
+    is: {
+        base: "is, ea, id",
+        translation: "er, sie, es; dieser",
+        forms: [
+            ["is", "Nominativ Singular Maskulin"],
+            ["ea", "Nominativ Singular Feminin"],
+            ["id", "Nominativ Singular Neutrum"],
+            ["eius", "Genitiv Singular aller Geschlechter"],
+            ["ei", "Dativ Singular aller Geschlechter"],
+            ["eum", "Akkusativ Singular Maskulin"],
+            ["eam", "Akkusativ Singular Feminin"],
+            ["id", "Akkusativ Singular Neutrum"],
+            ["eo", "Ablativ Singular Maskulin / Neutrum"],
+            ["ea", "Ablativ Singular Feminin"],
+            ["ii", "Nominativ Plural Maskulin"],
+            ["eae", "Nominativ Plural Feminin"],
+            ["ea", "Nominativ Plural Neutrum"],
+            ["eorum", "Genitiv Plural Maskulin / Neutrum"],
+            ["earum", "Genitiv Plural Feminin"],
+            ["eis", "Dativ Plural aller Geschlechter"],
+            ["eos", "Akkusativ Plural Maskulin"],
+            ["eas", "Akkusativ Plural Feminin"],
+            ["ea", "Akkusativ Plural Neutrum"],
+            ["eis", "Ablativ Plural aller Geschlechter"]
+        ]
+    },
+
+    qui: {
+        base: "qui, quae, quod",
+        translation: "der, die, das; welcher",
+        forms: [
+            ["qui", "Nominativ Singular Maskulin"],
+            ["quae", "Nominativ Singular Feminin"],
+            ["quod", "Nominativ Singular Neutrum"],
+            ["cuius", "Genitiv Singular aller Geschlechter"],
+            ["cui", "Dativ Singular aller Geschlechter"],
+            ["quem", "Akkusativ Singular Maskulin"],
+            ["quam", "Akkusativ Singular Feminin"],
+            ["quod", "Akkusativ Singular Neutrum"],
+            ["quo", "Ablativ Singular Maskulin / Neutrum"],
+            ["qua", "Ablativ Singular Feminin"],
+            ["qui", "Nominativ Plural Maskulin"],
+            ["quae", "Nominativ Plural Feminin"],
+            ["quae", "Nominativ Plural Neutrum"],
+            ["quorum", "Genitiv Plural Maskulin / Neutrum"],
+            ["quarum", "Genitiv Plural Feminin"],
+            ["quibus", "Dativ Plural aller Geschlechter"],
+            ["quos", "Akkusativ Plural Maskulin"],
+            ["quas", "Akkusativ Plural Feminin"],
+            ["quae", "Akkusativ Plural Neutrum"],
+            ["quibus", "Ablativ Plural aller Geschlechter"]
+        ]
+    },
+
+    ego: {
+        base: "ego",
+        translation: "ich",
+        forms: [
+            ["ego", "Nominativ Singular"],
+            ["mei", "Genitiv Singular"],
+            ["mihi", "Dativ Singular"],
+            ["me", "Akkusativ Singular"],
+            ["me", "Ablativ Singular"]
+        ]
+    },
+
+    tu: {
+        base: "tu",
+        translation: "du",
+        forms: [
+            ["tu", "Nominativ Singular"],
+            ["tui", "Genitiv Singular"],
+            ["tibi", "Dativ Singular"],
+            ["te", "Akkusativ Singular"],
+            ["te", "Ablativ Singular"]
+        ]
+    },
+
+    nos: {
+        base: "nos",
+        translation: "wir",
+        forms: [
+            ["nos", "Nominativ Plural"],
+            ["nostri", "Genitiv Plural"],
+            ["nobis", "Dativ Plural"],
+            ["nos", "Akkusativ Plural"],
+            ["nobis", "Ablativ Plural"]
+        ]
+    },
+
+    vos: {
+        base: "vos",
+        translation: "ihr",
+        forms: [
+            ["vos", "Nominativ Plural"],
+            ["vestri", "Genitiv Plural"],
+            ["vobis", "Dativ Plural"],
+            ["vos", "Akkusativ Plural"],
+            ["vobis", "Ablativ Plural"]
+        ]
+    },
+
+    sui: {
+        base: "sui",
+        translation: "sich",
+        forms: [
+            ["sui", "Genitiv Singular / Plural"],
+            ["sibi", "Dativ Singular / Plural"],
+            ["se", "Akkusativ Singular / Plural"],
+            ["se", "Ablativ Singular / Plural"]
+        ]
+    },
+
+    quis: {
+        base: "quis, quid",
+        translation: "wer, was",
+        forms: [
+            ["quis", "Nominativ Singular Maskulin"],
+            ["quis", "Nominativ Singular Feminin"],
+            ["quid", "Nominativ Singular Neutrum"],
+            ["cuius", "Genitiv Singular aller Geschlechter"],
+            ["cui", "Dativ Singular aller Geschlechter"],
+            ["quem", "Akkusativ Singular Maskulin"],
+            ["quam", "Akkusativ Singular Feminin"],
+            ["quid", "Akkusativ Singular Neutrum"],
+            ["quo", "Ablativ Singular Maskulin / Neutrum"],
+            ["qua", "Ablativ Singular Feminin"],
+            ["qui", "Nominativ Plural Maskulin"],
+            ["quae", "Nominativ Plural Feminin / Neutrum"],
+            ["quorum", "Genitiv Plural Maskulin / Neutrum"],
+            ["quarum", "Genitiv Plural Feminin"],
+            ["quibus", "Dativ / Ablativ Plural aller Geschlechter"],
+            ["quos", "Akkusativ Plural Maskulin"],
+            ["quas", "Akkusativ Plural Feminin"],
+            ["quae", "Akkusativ Plural Neutrum"]
+        ]
+    }
+};
+
+
+/* =========================
+   HILFSFUNKTIONEN
+========================= */
+
+function escapeHTML(text) {
+    return String(text).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[character]);
+}
+
+function switchTab(tabId, button) {
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tab-button").forEach(tabButton => {
+        tabButton.classList.remove("active");
+    });
+
+    document.getElementById(tabId).classList.add("active");
+    button.classList.add("active");
+}
+
+
+/* =========================
+   VERBANALYSE
+========================= */
+
+function analyzeVerb(word) {
+    const results = [];
+
+    for (const [infinitive, verb] of Object.entries(verbs)) {
+        const tenses = [
+            { name: "Präsens", forms: verb.present },
+            { name: "Imperfekt", forms: verb.imperfect },
+            { name: "Perfekt", forms: verb.perfect }
+        ];
+
+        const persons = [
+            "1. Person Singular",
+            "2. Person Singular",
+            "3. Person Singular",
+            "1. Person Plural",
+            "2. Person Plural",
+            "3. Person Plural"
+        ];
+
+        for (const tense of tenses) {
+            tense.forms.forEach((form, index) => {
+                if (form === word) {
+                    results.push(`
+                        <h3>Verb gefunden: ${infinitive}</h3>
+                        <p><b>Übersetzung:</b> ${verb.meaning}</p>
+                        <p><b>Konjugation:</b> ${verb.conjugation}</p>
+                        <p><b>Zeit:</b> ${tense.name}</p>
+                        <p><b>Person:</b> ${persons[index]}</p>
+                        <p><b>Form:</b> ${form}</p>
+                    `);
+                }
+            });
+        }
+
+        if (infinitive === word) {
+            results.push(`
+                <h3>Infinitiv gefunden</h3>
+                <p><b>Grundform:</b> ${infinitive}</p>
+                <p><b>Übersetzung:</b> ${verb.meaning}</p>
+                <p><b>Konjugation:</b> ${verb.conjugation}</p>
+            `);
+        }
+    }
+
+    return results;
+}
+
+
+/* =========================
+   NOMENANALYSE
+========================= */
+
+function analyzeNoun(word) {
+    const results = [];
+
+    for (const [noun, data] of Object.entries(nouns)) {
+        if (data.forms[word]) {
+            results.push(`
+                <h3>Nomen gefunden: ${noun}</h3>
+                <p><b>Übersetzung:</b> ${data.meaning}</p>
+                <p><b>Geschlecht:</b> ${data.gender}</p>
+                <p><b>Form:</b> ${word}</p>
+                <p><b>Bestimmung:</b> ${data.forms[word]}</p>
+            `);
+        }
+    }
+
+    return results;
+}
+
+
+/* =========================
+   PRONOMENANALYSE
+   ALLE MÖGLICHEN TREFFER
+========================= */
+
+function analyzePronouns(word) {
+    const results = [];
+
+    for (const [pronoun, data] of Object.entries(pronounForms)) {
+
+        for (const [form, description] of data.forms) {
+
+            if (form === word) {
+                results.push(`
+                    <h3>Pronomen gefunden: ${escapeHTML(data.base)}</h3>
+                    <p><b>Übersetzung:</b> ${escapeHTML(data.translation)}</p>
+                    <p><b>Grundform:</b> ${escapeHTML(pronoun)}</p>
+                    <p><b>Eingegebene Form:</b> ${escapeHTML(word)}</p>
+                    <p><b>Bestimmung:</b> ${escapeHTML(description)}</p>
+                `);
+            }
+
+        }
+    }
+
+    return results;
+}
+
+
+/* =========================
+   ALLGEMEINE WORTANALYSE
+========================= */
+
+function analyzeWord() {
+    const word = document.getElementById("wordInput").value
+        .trim()
+        .toLowerCase();
+
+    const output = document.getElementById("wordResult");
+
+    if (!word) {
+        output.innerHTML = "Bitte gib ein Wort ein.";
+        return;
+    }
+
+    let results = [];
+
+    results.push(...analyzeVerb(word));
+    results.push(...analyzeNoun(word));
+    results.push(...analyzePronouns(word));
+
+    if (results.length === 0) {
+        output.innerHTML = `
+            <h3>Keine Form gefunden</h3>
+            <p>Das Wort <b>${escapeHTML(word)}</b> wurde in der Datenbank nicht erkannt.</p>
+        `;
+    } else {
+        output.innerHTML = results.join("<hr>");
+    }
+}
+
+
+/* =========================
+   PRONOMEN-REITER:
+   EINGEGEBENE FORM ANALYSIEREN
+========================= */
+
+function analyzePronounInput() {
+    const word = document.getElementById("pronounInput").value
+        .trim()
+        .toLowerCase();
+
+    const output = document.getElementById("pronounResult");
+
+    if (!word) {
+        output.innerHTML = "Bitte gib eine Pronomenform ein.";
+        return;
+    }
+
+    const results = analyzePronouns(word);
+
+    if (results.length === 0) {
+        output.innerHTML = `
+            <h3>Keine Form gefunden</h3>
+            <p>Die Form <b>${escapeHTML(word)}</b> wurde nicht erkannt.</p>
+        `;
+    } else {
+        output.innerHTML = results.join("<hr>");
+    }
+}
+
+
+/* =========================
+   PRONOMEN AUSWÄHLEN
+   UND TABELLE ANZEIGEN
+========================= */
+
+function populatePronounSelect() {
+    const select = document.getElementById("pronounSelect");
+
+    for (const [key, data] of Object.entries(pronounForms)) {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = `${data.base} – ${data.translation}`;
+        select.appendChild(option);
+    }
+}
+
+function displaySelectedPronoun() {
+    const selected = document.getElementById("pronounSelect").value;
+    const output = document.getElementById("selectedPronounTable");
+
+    if (!selected) {
+        output.innerHTML = '<div class="empty">Wähle oben ein Pronomen aus.</div>';
+        return;
+    }
+
+    const data = pronounForms[selected];
+
+    let table = `
+        <h3>${escapeHTML(data.base)}</h3>
+        <p><b>Übersetzung:</b> ${escapeHTML(data.translation)}</p>
+
+        <table>
+            <tr>
+                <th>Lateinische Form</th>
+                <th>Grammatische Bestimmung</th>
+            </tr>
+    `;
+
+    for (const [form, description] of data.forms) {
+        table += `
+            <tr>
+                <td><b>${escapeHTML(form)}</b></td>
+                <td>${escapeHTML(description)}</td>
+            </tr>
+        `;
+    }
+
+    table += "</table>";
+
+    output.innerHTML = table;
+}
+
+
+/* =========================
+   ENTER-TASTE
+========================= */
+
+document.getElementById("wordInput").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        analyzeWord();
+    }
+});
+
+document.getElementById("pronounInput").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        analyzePronounInput();
+    }
+});
+
+
+/* =========================
+   START
+========================= */
+
+populatePronounSelect();
+
+</script>
+
+</body>
+</html>
